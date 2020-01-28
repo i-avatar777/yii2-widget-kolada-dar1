@@ -18,7 +18,6 @@ use yii\helpers\Url;
 
 /**
  * Class KaladaDar1
- * @package avatar\widgets
  *
  * Выводит месяца $monthArray в табличный календарь
  * визуально это выглядит так:
@@ -28,12 +27,16 @@ use yii\helpers\Url;
  * в данных $monthArray:
  * эти месяца должны быть под индексами от 1 до 9
  * в месяце содержатся строки - недели так же это массив с индексами от 1 до 9
- * в неделе содержатся 5 дней (клеточка-столбик) с индексами от 1 до 6
+ * в неделе содержатся 6 дней (клеточка-столбик) с индексами от 1 до 6
  */
 class KaladaDar1 extends Widget
 {
     public $monthArray;
 
+    /**
+     * @var array
+     * массив опций для тега tr для каждой недели, индексы могут быть от 1 до 9
+     */
     public $optionsWeek = [
         1 => ['style' => 'background-color: #000000; color: #ffffff;'],
         2 => ['style' => 'background-color: #ffa6a6;'],
@@ -46,6 +49,10 @@ class KaladaDar1 extends Widget
         9 => ['style' => 'background-color: #ffffff;'],
     ];
 
+    /**
+     * @var array
+     * массив опций для тега th для каждой колонки месяца, индексы могут быть от 1 до 6
+     */
     public $optionsColumn = [
         1 => ['style' => 'width: 32px;'],
         2 => ['style' => 'width: 32px;'],
@@ -55,6 +62,10 @@ class KaladaDar1 extends Widget
         6 => ['style' => 'width: 32px;'],
     ];
 
+    /**
+     * @var array
+     * массив названий недель, индексы могут быть от 1 до 9
+     */
     public $weekDays = [
         1 => 'Понедельникъ',
         2 => 'Вторникъ',
@@ -66,6 +77,8 @@ class KaladaDar1 extends Widget
         8 => 'Осьмица',
         9 => 'Неделя',
     ];
+
+    public $emptyCell = '';
 
     public function init()
     {
@@ -183,7 +196,7 @@ class KaladaDar1 extends Widget
      * @return array
      * эти месяца должны быть под индексами от 1 до 9
      * в месяце содержатся строки - недели так же это массив с индексами от 1 до 9
-     * в неделе содержатся 5 дней (клеточка-столбик) с индексами от 1 до 6
+     * в неделе содержатся 6 дней (клеточка-столбик) с индексами от 1 до 6
      */
     public static function getMonthArray($day, $isSacral = false)
     {
@@ -205,7 +218,7 @@ class KaladaDar1 extends Widget
      * @param int $count кол-во дней в месяце
      * @return array
      * в месяце содержатся строки - недели так же это массив с индексами от 1 до 9
-     * в неделе содержатся 5 дней (клеточка-столбик) с индексами от 1 до 6
+     * в неделе содержатся 6 дней (клеточка-столбик) с индексами от 1 до 6
      */
     public static function getMonth($day, $count)
     {
