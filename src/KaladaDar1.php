@@ -55,6 +55,18 @@ class KaladaDar1 extends Widget
         6 => ['style' => 'width: 32px;'],
     ];
 
+    public $weekDays = [
+        1 => 'Понедельникъ',
+        2 => 'Вторникъ',
+        3 => 'Третейникъ',
+        4 => 'Четверикъ',
+        5 => 'Пятница',
+        6 => 'Шестица',
+        7 => 'Седьмица',
+        8 => 'Осьмица',
+        9 => 'Неделя',
+    ];
+
     public function init()
     {
         parent::init();
@@ -81,18 +93,18 @@ class KaladaDar1 extends Widget
         $headers = [
             ['name' => '#'],
             ['name' => 'Название'],
-            ['name' => '1', 'options' => $this->optionsColumn[1]],
-            ['name' => '2', 'options' => $this->optionsColumn[2]],
-            ['name' => '3', 'options' => $this->optionsColumn[3]],
-            ['name' => '4', 'options' => $this->optionsColumn[4]],
-            ['name' => '5', 'options' => $this->optionsColumn[5]],
-            ['name' => '6', 'options' => $this->optionsColumn[6]],
-            ['name' => '1', 'options' => $this->optionsColumn[1]],
-            ['name' => '2', 'options' => $this->optionsColumn[2]],
-            ['name' => '3', 'options' => $this->optionsColumn[3]],
-            ['name' => '4', 'options' => $this->optionsColumn[4]],
-            ['name' => '5', 'options' => $this->optionsColumn[5]],
-            ['name' => '6', 'options' => $this->optionsColumn[6]],
+            ['name' => '1', 'options' => ArrayHelper::getValue($this->optionsColumn, 1, [])],
+            ['name' => '2', 'options' => ArrayHelper::getValue($this->optionsColumn, 2, [])],
+            ['name' => '3', 'options' => ArrayHelper::getValue($this->optionsColumn, 3, [])],
+            ['name' => '4', 'options' => ArrayHelper::getValue($this->optionsColumn, 4, [])],
+            ['name' => '5', 'options' => ArrayHelper::getValue($this->optionsColumn, 5, [])],
+            ['name' => '6', 'options' => ArrayHelper::getValue($this->optionsColumn, 6, [])],
+            ['name' => '1', 'options' => ArrayHelper::getValue($this->optionsColumn, 1, [])],
+            ['name' => '2', 'options' => ArrayHelper::getValue($this->optionsColumn, 2, [])],
+            ['name' => '3', 'options' => ArrayHelper::getValue($this->optionsColumn, 3, [])],
+            ['name' => '4', 'options' => ArrayHelper::getValue($this->optionsColumn, 4, [])],
+            ['name' => '5', 'options' => ArrayHelper::getValue($this->optionsColumn, 5, [])],
+            ['name' => '6', 'options' => ArrayHelper::getValue($this->optionsColumn, 6, [])],
         ];
         $rows = [];
         foreach ($headers as $h) {
@@ -119,17 +131,7 @@ class KaladaDar1 extends Widget
         $rowsCount = 5;
         $week = 9;
         $cols = 2;
-        $weekDays = [
-            1 => 'Понедельникъ',
-            2 => 'Вторникъ',
-            3 => 'Третейникъ',
-            4 => 'Четверикъ',
-            5 => 'Пятница',
-            6 => 'Шестица',
-            7 => 'Седьмица',
-            8 => 'Осьмица',
-            9 => 'Неделя',
-        ];
+        $weekDays = $this->weekDays;
         $rows5 = [];
         /** @var int $r  строка месяцев в календаре */
         for($r = 1; $r <= $rowsCount; $r++) {
@@ -160,7 +162,7 @@ class KaladaDar1 extends Widget
             $r = [];
             for ($g = 1; $g <= 9; $g++) {
                 $tr = $r1[$g];
-                $r[] = Html::tag('tr', join('', $tr), $this->optionsWeek[$g]);
+                $r[] = Html::tag('tr', join('', $tr), ArrayHelper::getValue($this->optionsWeek, $g, []));
             }
             $d5[] =  join('', $r);
         }
