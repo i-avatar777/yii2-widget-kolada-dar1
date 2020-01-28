@@ -75,3 +75,6 @@ echo \avatar\widgets\KaladaDar1::widget([
 
 Славяно-Арийский Календарь
 http://energodar.net/ha-tha.php?str=vedy%2Fkalenda 
+
+Yii2
+https://www.yiiframework.com/
