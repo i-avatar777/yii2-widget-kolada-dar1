@@ -220,7 +220,7 @@ class KoladaDar1 extends Widget
         $add = ($count == 40)? 0 : 1;
         // заполнение пустых полей
         for ($r = 1; $r < $day; $r++) {
-            $out[$r] = [ 1 => ''];
+            $out[$r] = [ 1 => $this->emptyCell];
         }
         $d = 1; // порядковый день в месяце
         for ($r = $day; $r <= 9; $r++) {
@@ -249,12 +249,12 @@ class KoladaDar1 extends Widget
                 $d++;
             }
             for ($r = $g + 1; $r <= 9; $r++) {
-                $out[$r][$f+2] = '';
+                $out[$r][$f+2] = $this->emptyCell;
             }
         }
         if (!($f == 4 and $isLast == true)) {
             for ($r = 1; $r <= 9; $r++) {
-                $out[$r][6] = '';
+                $out[$r][6] = $this->emptyCell;
             }
         }
 
