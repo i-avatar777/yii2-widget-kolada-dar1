@@ -33,13 +33,13 @@ class KoladaDar1 extends Widget
      */
     public $optionsWeek = [
         1 => ['style' => 'background-color: #000000; color: #ffffff;'],
-        2 => ['style' => 'background-color: #ffa6a6;'],
-        3 => ['style' => 'background-color: #ffd2a6;'],
-        4 => ['style' => 'background-color: #ffffa6;'],
-        5 => ['style' => 'background-color: #a7fca4;'],
-        6 => ['style' => 'background-color: #a6a6ff;'],
-        7 => ['style' => 'background-color: #bda5d1;'],
-        8 => ['style' => 'background-color: #d4a6f7;'],
+        2 => ['style' => 'background-color: #ff9395;'],
+        3 => ['style' => 'background-color: #ffd092;'],
+        4 => ['style' => 'background-color: #fffb92;'],
+        5 => ['style' => 'background-color: #ace790;'],
+        6 => ['style' => 'background-color: #a1e5fe;'],
+        7 => ['style' => 'background-color: #909ffa;'],
+        8 => ['style' => 'background-color: #b5a4e5;'],
         9 => ['style' => 'background-color: #ffffff;'],
     ];
 
