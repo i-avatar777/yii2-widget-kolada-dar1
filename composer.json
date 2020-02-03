@@ -19,7 +19,7 @@
   },
   "autoload": {
     "psr-4": {
-      "iAvatar777\\widgets\\": "src"
+      "iAvatar777\\widgets\\KoladaDar1\\": "src"
     }
   },
   "repositories": [
