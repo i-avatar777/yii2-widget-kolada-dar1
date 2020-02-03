@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: s.arhangelskiy
- * Date: 27.09.2016
- * Time: 17:24
- */
 
-namespace iAvatar777\widgets;
+namespace iAvatar777\widgets\KoladaDar1;
 
 use Yii;
 use yii\base\Widget;
@@ -19,19 +13,19 @@ use yii\helpers\Url;
 /**
  * Class KaladaDar1
  *
- * Выводит месяца $monthArray в табличный календарь
+ * Выводит месяца в табличный календарь
  * визуально это выглядит так:
  * месяца по 41 день справа месяца по 40 дней слева
  * всего таких строк 5, последняя соответственно с одним месяцем
  *
- * в данных $monthArray:
- * эти месяца должны быть под индексами от 1 до 9
- * в месяце содержатся строки - недели так же это массив с индексами от 1 до 9
- * в неделе содержатся 6 дней (клеточка-столбик) с индексами от 1 до 6
  */
-class KaladaDar1 extends Widget
+class KoladaDar1 extends Widget
 {
-    public $monthArray;
+    /** @var int 1-9 */
+    public $dayStart;
+
+    /** @var bool */
+    public $isSacral = false;
 
     /**
      * @var array
@@ -139,7 +133,7 @@ class KaladaDar1 extends Widget
     private function body()
     {
         // заполняю пустые месяцы
-        $monthArray = $this->monthArray;
+        $monthArray = $this->getMonthArray($this->dayStart, $this->isSacral);
 
         $rowsCount = 5;
         $week = 9;
@@ -191,20 +185,20 @@ class KaladaDar1 extends Widget
     /**
      * Генерирует массив месяцев для значения $this->monthArray
      *
-     * @param int $day день недели с которого начинается год от 1 до 9
+     * @param int $day день недели с которого начинается лето от 1 до 9
      * @param bool $isSacral флаг. Это священный год? Если да то все месяца будут по 41 дню
      * @return array
      * эти месяца должны быть под индексами от 1 до 9
      * в месяце содержатся строки - недели так же это массив с индексами от 1 до 9
      * в неделе содержатся 6 дней (клеточка-столбик) с индексами от 1 до 6
      */
-    public static function getMonthArray($day, $isSacral = false)
+    public function getMonthArray($day, $isSacral = false)
     {
         $m = [];
         $d = $day; // день недели с которого начинается месяц от 1 до 9
         for($r = 1; $r <= 9; $r++) {
             $count = ($r % 2 == 1) ? 41 : ($isSacral? 41 : 40);
-            $m[$r] = self::getMonth($d, $count);
+            $m[$r] = $this->getMonth($d, $count);
             $d = (($count + ($d-1)) % 9) + 1;
         }
 
@@ -220,7 +214,7 @@ class KaladaDar1 extends Widget
      * в месяце содержатся строки - недели так же это массив с индексами от 1 до 9
      * в неделе содержатся 6 дней (клеточка-столбик) с индексами от 1 до 6
      */
-    public static function getMonth($day, $count)
+    public function getMonth($day, $count)
     {
         $out = [];
         $add = ($count == 40)? 0 : 1;

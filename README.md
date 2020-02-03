@@ -2,7 +2,7 @@
 
 Виджет для Yii2 для рисования календаря Коляда Дар на лето
 
-Версия 1.0.2
+Версия 1.1.0
 
 Выводит месяца в табличный календарь, визуально это выглядит так:
 месяца по 41 день справа месяца по 40 дней слева, всего таких строк 5, последняя соответственно с одним месяцем
@@ -16,20 +16,20 @@
 ## Пример использования
 
 ```
-$monthArray = \avatar\widgets\KaladaDar1::getMonthArray(9, false);
-echo \avatar\widgets\KaladaDar1::widget([
-    'monthArray'  => $monthArray,
+echo \avatar\widgets\KoladaDar1\KoladaDar1::widget([
+    'dayStart'  => 9,
 ]); 
 ```
 
-`monthArray` - массив месяцев, индексы от 1 до 9. Месяц это массив строк (недель) от 1 до 9. Неделя это массив ячеек (дней) от 1 до 6. Ячейка (День) содержит число обозначающую порядковый номер месяца
+`dayStart` - день недели с которого начинается лето от 1 до 9
 
 Расширенный вид запуска с параметрами стилей таблицы:
 
 ```
 $monthArray = \avatar\widgets\KaladaDar1::getMonthArray(9, false);
 echo \avatar\widgets\KaladaDar1::widget([
-    'monthArray'  => $monthArray,
+    'dayStart'    => 9,
+    'isSacral'    => true,
     'optionsWeek' => [
          1 => ['style' => 'background-color: #000000; color: #ffffff;'],
          2 => ['style' => 'background-color: #ffa6a6;'],
@@ -68,6 +68,8 @@ echo \avatar\widgets\KaladaDar1::widget([
 `optionsColumn` - массив опций для тега `th` для каждой колонки месяца, индексы могут быть от 1 до 6
 
 `weekDays` - массив названий недель, индексы могут быть от 1 до 9
+
+`isSacral` - флаг. Это священный год? Если да то все месяца будут по 41 дню
 
 ## Ссылки
 
