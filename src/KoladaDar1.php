@@ -74,6 +74,8 @@ class KoladaDar1 extends Widget
 
     public $emptyCell = '';
 
+    public $isDrawIds = false;
+
     public function init()
     {
         parent::init();
@@ -148,15 +150,23 @@ class KoladaDar1 extends Widget
                 $row[0] = Html::tag('td', $i);
                 $row[1] = Html::tag('td', $weekDays[$i]);
                 for($j = 1; $j <= 6; $j++) {
-                    $row[$j + 1] = Html::tag('td', $monthArray[($r-1)*2 + 1][$i][$j]);
+                    $options = [];
+                    if ($this->isDrawIds) {
+                        $options['id'] = 'day_'.$r.'_'.$monthArray[($r-1)*2 + 1][$i][$j];
+                    }
+                    $row[$j + 1] = Html::tag('td', $monthArray[($r-1)*2 + 1][$i][$j], $options);
                 }
                 if ($r < $rowsCount) {
                     for($j = 1; $j <= 6; $j++) {
-                        $row[$j + 1 + 6] = Html::tag('td', $monthArray[($r-1)*2 + 2][$i][$j]);
+                        $options = [];
+                        if ($this->isDrawIds) {
+                            $options['id'] = 'day_'.$r.'_'.$monthArray[($r-1)*2 + 1][$i][$j];
+                        }
+                        $row[$j + 1 + 6] = Html::tag('td', $monthArray[($r-1)*2 + 2][$i][$j], $options);
                     }
                 } else {
                     for($j = 1; $j <= 6; $j++) {
-                        $row[$j + 1 + 6] = Html::tag('td', '');
+                        $row[$j + 1 + 6] = Html::tag('td', $this->emptyCell);
                     }
                 }
                 $rows9[$i] = $row;
