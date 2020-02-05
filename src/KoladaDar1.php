@@ -152,7 +152,7 @@ class KoladaDar1 extends Widget
                 for($j = 1; $j <= 6; $j++) {
                     $options = [];
                     if ($this->isDrawIds) {
-                        $options['id'] = 'day_'.$r.'_'.$monthArray[($r-1)*2 + 1][$i][$j];
+                        $options['id'] = 'day_'.(($r-1)*2 + 1).'_'.$monthArray[($r-1)*2 + 1][$i][$j];
                     }
                     $row[$j + 1] = Html::tag('td', $monthArray[($r-1)*2 + 1][$i][$j], $options);
                 }
@@ -160,7 +160,7 @@ class KoladaDar1 extends Widget
                     for($j = 1; $j <= 6; $j++) {
                         $options = [];
                         if ($this->isDrawIds) {
-                            $options['id'] = 'day_'.$r.'_'.$monthArray[($r-1)*2 + 1][$i][$j];
+                            $options['id'] = 'day_'.(($r-1)*2 + 2).'_'.$monthArray[($r-1)*2 + 2][$i][$j];
                         }
                         $row[$j + 1 + 6] = Html::tag('td', $monthArray[($r-1)*2 + 2][$i][$j], $options);
                     }
