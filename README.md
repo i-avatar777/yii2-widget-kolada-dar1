@@ -75,7 +75,7 @@ echo \avatar\widgets\KaladaDar1::widget([
 
 `emptyCell` - содержимое для отображения пустой ячейки дня 
 
-`isDrawIds` - bool - флаг. Добавлять атрибут id в тег td (формат day_[m]_[d]) 
+`isDrawIds` - bool - флаг. Добавлять атрибут id в тег td (формат day_[m]_[d]) для дней
 
 ## Ссылки
 
