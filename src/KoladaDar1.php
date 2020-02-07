@@ -161,11 +161,11 @@ class KoladaDar1 extends Widget
         /** @var int $r  строка месяцев в календаре */
         for($r = 1; $r <= $rowsCount; $r++) {
             $rows9 = [];
-            $rows9[] = join('', [
+            $rows9[0] = join('', [
                 Html::tag('td', ''),
                 Html::tag('td', ''),
-                Html::tag('td', $this->monthNames[(($r-1)*2 + 1)], ['rowspan' => 6]),
-                ($r < $rowsCount) ? Html::tag('td', $this->monthNames[(($r-1)*2 + 2)], ['rowspan' => 6]) : Html::tag('td', '', ['rowspan' => 6]),
+                Html::tag('td', $this->monthNames[(($r-1)*2 + 1)], ['colspan' => 6]),
+                ($r < $rowsCount) ? Html::tag('td', $this->monthNames[(($r-1)*2 + 2)], ['colspan' => 6]) : Html::tag('td', '', ['colspan' => 6]),
             ]);
             for($i = 1; $i <= 9; $i++) {
                 $row = [];
@@ -199,6 +199,7 @@ class KoladaDar1 extends Widget
         $d5 = [];
         foreach ($rows5 as $r1) {
             $r = [];
+            $r[] = Html::tag('tr', $r1[0]);
             for ($g = 1; $g <= 9; $g++) {
                 $tr = $r1[$g];
                 $r[] = Html::tag('tr', join('', $tr), ArrayHelper::getValue($this->optionsWeek, $g, []));
