@@ -72,6 +72,22 @@ class KoladaDar1 extends Widget
         9 => 'Неделя',
     ];
 
+    /**
+     * @var array
+     * массив названий недель, индексы могут быть от 1 до 9
+     */
+    public $monthNames = [
+        1 => 'Рамхатъ',
+        2 => 'Айлѣтъ',
+        3 => 'Бейлѣтъ',
+        4 => 'Гэйлѣтъ',
+        5 => 'Дайлѣтъ',
+        6 => 'Элѣтъ',
+        7 => 'Вэйлѣтъ',
+        8 => 'Хейлѣтъ',
+        9 => 'Тайлѣтъ',
+    ];
+
     public $emptyCell = '';
 
     public $isDrawIds = false;
@@ -145,6 +161,12 @@ class KoladaDar1 extends Widget
         /** @var int $r  строка месяцев в календаре */
         for($r = 1; $r <= $rowsCount; $r++) {
             $rows9 = [];
+            $rows9[] = join('', [
+                Html::tag('td', ''),
+                Html::tag('td', ''),
+                Html::tag('td', $this->monthNames[(($r-1)*2 + 1)], ['rowspan' => 6]),
+                ($r < $rowsCount) ? Html::tag('td', $this->monthNames[(($r-1)*2 + 2)], ['rowspan' => 6]) : Html::tag('td', '', ['rowspan' => 6]),
+            ]);
             for($i = 1; $i <= 9; $i++) {
                 $row = [];
                 $row[0] = Html::tag('td', $i);
