@@ -83,6 +83,10 @@ echo \avatar\widgets\KaladaDar1::widget([
 
 `DateGrigorFormat` - string - форматы даты для подсказки если isDrawDateGrigor = true. По умолчанию PHP date() `d.m.Y`
 
+`DateGrigorClass` - string - Название класса для григорианской даты если $isDrawDateGrigor=true
+
+`DateGrigorFirst` - string - Дата первого дня года в григорианском календаре в формате 'Y-m-d', по умолчанию текущий
+
 ## Ссылки
 
 Славяно-Арийский Календарь

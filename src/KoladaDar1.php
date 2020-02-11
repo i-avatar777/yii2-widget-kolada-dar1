@@ -116,7 +116,13 @@ class KoladaDar1 extends Widget
     public $DateGrigorFormat = 'd.m.Y';
 
     /**
-     * Дата первого дня года в григорианском календаре в формате 'Y-m-d'
+     * Название класса для григ даты  если $isDrawDateGrigor=true
+     * @var
+     */
+    public $DateGrigorClass;
+
+    /**
+     * Дата первого дня года в григорианском календаре в формате 'Y-m-d', по умолчанию текущий
      *
      * @var string
      */
@@ -132,7 +138,7 @@ class KoladaDar1 extends Widget
             } else {
                 $y = date('Y');
             }
-            $this->DateGrigorFirst = $y . '-' . $m . '-' . $d;
+            $this->DateGrigorFirst = $y . '-09-22';
         }
         parent::init();
         ob_start();
@@ -269,21 +275,28 @@ class KoladaDar1 extends Widget
             // 1 - 9
             $monthSlav = ($r-1)*2 + $f;
 
-            // вычисляю дату григорианского календаря
-            $d = $dateGrigFirstYear;
-            if ($this->isSacral) {
-                $z = (($monthSlav-1) * 41) + ($monthArray[$monthSlav][$i][$j] - 1);
-            } else {
-                $z = $this->calcKolDays($monthSlav);
-            }
-            $d->add(new \DateInterval('P' . $z . 'D'));
+            if ($monthArray[$monthSlav][$i][$j] != $this->emptyCell) {
+                if ($this->isDrawDateGrigor) {
 
-            if ($this->isDrawIds) {
-                $options['id'] = 'day_' . $monthSlav . '_' . $monthArray[$monthSlav][$i][$j];
+                    // вычисляю дату григорианского календаря
+                    $d = new \DateTime($dateGrigFirstYear->format('Y-m-d'));
+                    if ($this->isSacral) {
+                        $z = (($monthSlav-1) * 41) + ($monthArray[$monthSlav][$i][$j] - 1);
+                    } else {
+                        $z = $this->calcKolDays($monthSlav) + ($monthArray[$monthSlav][$i][$j] - 1);
+                    }
+                    $d->add(new \DateInterval('P' . $z . 'D'));
+
+                    $options['title'] = date($this->DateGrigorFormat, $d->format('U'));
+                    if ($this->DateGrigorClass) {
+                        $options['class'] = $this->DateGrigorClass;
+                    }
+                }
+                if ($this->isDrawIds) {
+                    $options['id'] = 'day_' . $monthSlav . '_' . $monthArray[$monthSlav][$i][$j];
+                }
             }
-            if ($this->isDrawDateGrigor) {
-                $options['title'] = date($this->DateGrigorFormat, $d->format('U'));
-            }
+
             $add = ($f == 2)? 6: 0;
             $row[$j + 1 + $add] = Html::tag('td', $monthArray[$monthSlav][$i][$j], $options);
         }
@@ -300,7 +313,7 @@ class KoladaDar1 extends Widget
         if ($i % 2 == 1) {
             return (($i - 1) / 2) * 81;
         } else {
-            return (($i / 2) - 1) * 81 + 40;
+            return (($i / 2) - 1) * 81 + 41;
         }
     }
 
