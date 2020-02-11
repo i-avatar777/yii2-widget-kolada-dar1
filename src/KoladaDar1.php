@@ -115,8 +115,25 @@ class KoladaDar1 extends Widget
      */
     public $DateGrigorFormat = 'd.m.Y';
 
+    /**
+     * Дата первого дня года в григорианском календаре в формате 'Y-m-d'
+     *
+     * @var string
+     */
+    public $DateGrigorFirst;
+
     public function init()
     {
+        if (is_null($this->DateGrigorFirst)) {
+            $d = date('d');
+            $m = date('m');
+            if ($m < 9 and $d < 22) {
+                $y = date('Y') - 1;
+            } else {
+                $y = date('Y');
+            }
+            $this->DateGrigorFirst = $y . '-' . $m . '-' . $d;
+        }
         parent::init();
         ob_start();
     }
@@ -176,6 +193,8 @@ class KoladaDar1 extends Widget
         // заполняю пустые месяцы
         $monthArray = $this->getMonthArray($this->dayStart, $this->isSacral);
 
+        $dateGrigFirstYear = new \DateTime($this->DateGrigorFirst);
+
         $rowsCount = 5;
         $week = 9;
         $cols = 2;
@@ -198,11 +217,11 @@ class KoladaDar1 extends Widget
                 $row = [];
                 $row[0] = Html::tag('td', $i);
                 $row[1] = Html::tag('td', $weekDays[$i]);
-                $this->add6cell($row, $r, $monthArray, $i);
+                $this->add6cell($row, $r, $monthArray, $i, $dateGrigFirstYear);
 
                 // Если это не последняя строка-месяцев календаря
                 if ($r < $rowsCount) {
-                    $this->add6cell($row, $r, $monthArray, $i, 6);
+                    $this->add6cell($row, $r, $monthArray, $i, $dateGrigFirstYear, 2);
                 } else {
                     for($j = 1; $j <= 6; $j++) {
                         $row[$j + 1 + 6] = Html::tag('td', $this->emptyCell);
@@ -238,21 +257,50 @@ class KoladaDar1 extends Widget
      * @param $r
      * @param $monthArray
      * @param $i
+     * @param \DateTime $dateGrigFirstYear
      * @param int $f 1 - первый месяц в строке, 2 - второй месяц в строке
      * @throws \Exception
      */
-    private function add6cell(&$row, $r, $monthArray, $i, $f = 1)
+    private function add6cell(&$row, $r, $monthArray, $i, $dateGrigFirstYear, $f = 1)
     {
+
         for($j = 1; $j <= 6; $j++) {
             $options = [];
+            // 1 - 9
+            $monthSlav = ($r-1)*2 + $f;
+
+            // вычисляю дату григорианского календаря
+            $d = $dateGrigFirstYear;
+            if ($this->isSacral) {
+                $z = (($monthSlav-1) * 41) + ($monthArray[$monthSlav][$i][$j] - 1);
+            } else {
+                $z = $this->calcKolDays($monthSlav);
+            }
+            $d->add(new \DateInterval('P'.$z.'D'));
+
             if ($this->isDrawIds) {
-                $options['id'] = 'day_'.(($r-1)*2 + $f).'_'.$monthArray[($r-1)*2 + $f][$i][$j];
+                $options['id'] = 'day_' . $monthSlav . '_' . $monthArray[$monthSlav][$i][$j];
             }
             if ($this->isDrawDateGrigor) {
-                $options['title'] = date($this->DateGrigorFormat, (new \DateTime('2020-02-02'))->format('U'));
+                $options['title'] = date($this->DateGrigorFormat, $d->format('U'));
             }
             $add = ($f == 2)? 6: 0;
-            $row[$j + 1 + $add] = Html::tag('td', $monthArray[($r-1)*2 + $f][$i][$j], $options);
+            $row[$j + 1 + $add] = Html::tag('td', $monthArray[$monthSlav][$i][$j], $options);
+        }
+    }
+
+    /**
+     * Вычисляет сколько дней до начала месяца (сл) в простом лете
+     * Например для 1 = 0, для 2 = 41, 3 - 81
+     * @param int $i 1-9
+     * @return int
+     */
+    private function calcKolDays($i)
+    {
+        if ($i % 2 == 1) {
+            return (($i - 1) / 2) * 81;
+        } else {
+            return (($i / 2) - 1) * 81 + 40;
         }
     }
 
