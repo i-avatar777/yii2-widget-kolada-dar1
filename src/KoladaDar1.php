@@ -202,7 +202,7 @@ class KoladaDar1 extends Widget
 
                 // Если это не последняя строка-месяцев календаря
                 if ($r < $rowsCount) {
-                    $this->add6cell($row, $r, $monthArray, $i);
+                    $this->add6cell($row, $r, $monthArray, $i, 6);
                 } else {
                     for($j = 1; $j <= 6; $j++) {
                         $row[$j + 1 + 6] = Html::tag('td', $this->emptyCell);
@@ -233,7 +233,7 @@ class KoladaDar1 extends Widget
     }
 
 
-    private function add6cell(&$row, $r, $monthArray, $i)
+    private function add6cell(&$row, $r, $monthArray, $i, $f = 0)
     {
         for($j = 1; $j <= 6; $j++) {
             $options = [];
@@ -244,7 +244,7 @@ class KoladaDar1 extends Widget
                 $options['title'] = date($this->DateGrigorFormat);
                 $options['toogle'] = 'tooltip';
             }
-            $row[$j + 1] = Html::tag('td', $monthArray[($r-1)*2 + 1][$i][$j], $options);
+            $row[$j + 1 + $f] = Html::tag('td', $monthArray[($r-1)*2 + 1][$i][$j], $options);
         }
     }
 
