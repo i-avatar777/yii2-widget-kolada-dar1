@@ -241,7 +241,7 @@ class KoladaDar1 extends Widget
                 $options['id'] = 'day_'.(($r-1)*2 + 1).'_'.$monthArray[($r-1)*2 + 1][$i][$j];
             }
             if ($this->isDrawDateGrigor) {
-                $options['title'] = date($this->DateGrigorFormat);
+                $options['title'] = date($this->DateGrigorFormat, (new \DateTime('2020-02-02')));
                 $options['data']['toggle'] = 'tooltip';
             }
             $row[$j + 1 + $f] = Html::tag('td', $monthArray[($r-1)*2 + 1][$i][$j], $options);
