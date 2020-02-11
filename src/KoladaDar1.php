@@ -276,7 +276,7 @@ class KoladaDar1 extends Widget
             } else {
                 $z = $this->calcKolDays($monthSlav);
             }
-            $d->add(new \DateInterval('P'.$z.'D'));
+            $d->add(new \DateInterval('P' . $z . 'D'));
 
             if ($this->isDrawIds) {
                 $options['id'] = 'day_' . $monthSlav . '_' . $monthArray[$monthSlav][$i][$j];
