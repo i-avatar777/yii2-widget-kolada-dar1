@@ -249,7 +249,7 @@ class KoladaDar1 extends Widget
                 $options['id'] = 'day_'.(($r-1)*2 + $f).'_'.$monthArray[($r-1)*2 + $f][$i][$j];
             }
             if ($this->isDrawDateGrigor) {
-                $options['title'] = date($this->DateGrigorFormat, (new \DateTime('2020-02-02')));
+                $options['title'] = date($this->DateGrigorFormat, (new \DateTime('2020-02-02'))->format('U'));
             }
             $add = ($f == 2)? 6: 0;
             $row[$j + 1 + $add] = Html::tag('td', $monthArray[($r-1)*2 + $f][$i][$j], $options);
