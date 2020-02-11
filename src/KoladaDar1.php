@@ -242,7 +242,7 @@ class KoladaDar1 extends Widget
             }
             if ($this->isDrawDateGrigor) {
                 $options['title'] = date($this->DateGrigorFormat);
-                $options['toogle'] = 'tooltip';
+                $options['data']['toggle'] = 'tooltip';
             }
             $row[$j + 1 + $f] = Html::tag('td', $monthArray[($r-1)*2 + 1][$i][$j], $options);
         }
