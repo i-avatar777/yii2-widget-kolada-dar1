@@ -88,9 +88,32 @@ class KoladaDar1 extends Widget
         9 => 'Тайлѣтъ',
     ];
 
+    /**
+     * содержимое для отображения пустой ячейки дня
+     * @var string
+     */
     public $emptyCell = '';
 
+    /**
+     * bool - флаг. Добавлять атрибут id в тег td (формат day_[m]_[d]) для дней
+     *
+     * @var bool
+     */
     public $isDrawIds = false;
+
+    /**
+     * bool - флаг. Добавлять подсказки к каждому дню в виде григорианской даты? true - добавлять, false - не добавлять. По умолчанию добавлять - false.
+     *
+     * @var bool
+     */
+    public $isDrawDateGrigor = false;
+
+    /**
+     * форматы даты для подсказки если isDrawDateGrigor = true. По умолчанию PHP date() `d.m.Y`
+     *
+     * @var string
+     */
+    public $DateGrigorFormat = 'd.m.Y';
 
     public function init()
     {
@@ -161,31 +184,25 @@ class KoladaDar1 extends Widget
         /** @var int $r  строка месяцев в календаре */
         for($r = 1; $r <= $rowsCount; $r++) {
             $rows9 = [];
+
+            // Добавляю строку с названием месяца
             $rows9[0] = join('', [
                 Html::tag('td', ''),
                 Html::tag('td', ''),
                 Html::tag('td', $this->monthNames[(($r-1)*2 + 1)], ['colspan' => 6]),
                 ($r < $rowsCount) ? Html::tag('td', $this->monthNames[(($r-1)*2 + 2)], ['colspan' => 6]) : Html::tag('td', '', ['colspan' => 6]),
             ]);
+
+            // Добавляю девять недель
             for($i = 1; $i <= 9; $i++) {
                 $row = [];
                 $row[0] = Html::tag('td', $i);
                 $row[1] = Html::tag('td', $weekDays[$i]);
-                for($j = 1; $j <= 6; $j++) {
-                    $options = [];
-                    if ($this->isDrawIds) {
-                        $options['id'] = 'day_'.(($r-1)*2 + 1).'_'.$monthArray[($r-1)*2 + 1][$i][$j];
-                    }
-                    $row[$j + 1] = Html::tag('td', $monthArray[($r-1)*2 + 1][$i][$j], $options);
-                }
+                $this->add6cell($row, $r, $monthArray, $i);
+
+                // Если это не последняя строка-месяцев календаря
                 if ($r < $rowsCount) {
-                    for($j = 1; $j <= 6; $j++) {
-                        $options = [];
-                        if ($this->isDrawIds) {
-                            $options['id'] = 'day_'.(($r-1)*2 + 2).'_'.$monthArray[($r-1)*2 + 2][$i][$j];
-                        }
-                        $row[$j + 1 + 6] = Html::tag('td', $monthArray[($r-1)*2 + 2][$i][$j], $options);
-                    }
+                    $this->add6cell($row, $r, $monthArray, $i);
                 } else {
                     for($j = 1; $j <= 6; $j++) {
                         $row[$j + 1 + 6] = Html::tag('td', $this->emptyCell);
@@ -213,6 +230,22 @@ class KoladaDar1 extends Widget
         );
 
         return $body;
+    }
+
+
+    private function add6cell(&$row, $r, $monthArray, $i)
+    {
+        for($j = 1; $j <= 6; $j++) {
+            $options = [];
+            if ($this->isDrawIds) {
+                $options['id'] = 'day_'.(($r-1)*2 + 1).'_'.$monthArray[($r-1)*2 + 1][$i][$j];
+            }
+            if ($this->isDrawDateGrigor) {
+                $options['title'] = date($this->DateGrigorFormat);
+                $options['toogle'] = 'tooltip';
+            }
+            $row[$j + 1] = Html::tag('td', $monthArray[($r-1)*2 + 1][$i][$j], $options);
+        }
     }
 
     /**

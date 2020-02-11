@@ -2,7 +2,7 @@
 
 Виджет для Yii2 для рисования календаря Коляда Дар на лето
 
-Версия 1.1.4
+Версия 1.1.8
 
 Выводит месяца в табличный календарь, визуально это выглядит так:
 месяца по 41 день справа месяца по 40 дней слева, всего таких строк 5, последняя соответственно с одним месяцем
@@ -61,7 +61,9 @@ echo \avatar\widgets\KaladaDar1::widget([
         9 => 'Неделя',
     ],
     'emptyCell' => '&nbsp;'
-    'isDrawIds' => true
+    'isDrawIds' => true,
+    'isDrawDateGrigor' => true,
+    'DateGrigorFormat' => 'd.m.Y'
 ]); 
 ```
 
@@ -76,6 +78,10 @@ echo \avatar\widgets\KaladaDar1::widget([
 `emptyCell` - содержимое для отображения пустой ячейки дня 
 
 `isDrawIds` - bool - флаг. Добавлять атрибут id в тег td (формат day_[m]_[d]) для дней
+
+`isDrawDateGrigor` - bool - флаг. Добавлять подсказки к каждому дню в виде григорианской даты? true - добавлять, false - не добавлять. По умолчанию добавлять - false.
+
+`DateGrigorFormat` - string - форматы даты для подсказки если isDrawDateGrigor = true. По умолчанию PHP date() `d.m.Y`
 
 ## Ссылки
 
