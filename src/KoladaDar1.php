@@ -233,18 +233,26 @@ class KoladaDar1 extends Widget
     }
 
 
-    private function add6cell(&$row, $r, $monthArray, $i, $f = 0)
+    /**
+     * @param $row
+     * @param $r
+     * @param $monthArray
+     * @param $i
+     * @param int $f 1 - первый месяц в строке, 2 - второй месяц в строке
+     * @throws \Exception
+     */
+    private function add6cell(&$row, $r, $monthArray, $i, $f = 1)
     {
         for($j = 1; $j <= 6; $j++) {
             $options = [];
             if ($this->isDrawIds) {
-                $options['id'] = 'day_'.(($r-1)*2 + 1).'_'.$monthArray[($r-1)*2 + 1][$i][$j];
+                $options['id'] = 'day_'.(($r-1)*2 + $f).'_'.$monthArray[($r-1)*2 + $f][$i][$j];
             }
             if ($this->isDrawDateGrigor) {
                 $options['title'] = date($this->DateGrigorFormat, (new \DateTime('2020-02-02')));
-                $options['data']['toggle'] = 'tooltip';
             }
-            $row[$j + 1 + $f] = Html::tag('td', $monthArray[($r-1)*2 + 1][$i][$j], $options);
+            $add = ($f == 2)? 6: 0;
+            $row[$j + 1 + $add] = Html::tag('td', $monthArray[($r-1)*2 + $f][$i][$j], $options);
         }
     }
 
