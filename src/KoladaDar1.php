@@ -314,7 +314,8 @@ class KoladaDar1 extends Widget
                     $function = $this->cellFormat;
                     $v = $function($d, ['day' => $monthArray[$monthSlav][$i][$j]]);
                 } else {
-                    $v = $monthArray[$monthSlav][$i][$j];
+                    $v = DateRus::format($this->cellFormat, $d, ['day' => $monthArray[$monthSlav][$i][$j]]);
+//                    $v = $monthArray[$monthSlav][$i][$j];
                 }
             } else {
                 $v = $monthArray[$monthSlav][$i][$j];
