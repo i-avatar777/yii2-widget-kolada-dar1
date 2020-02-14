@@ -312,7 +312,7 @@ class KoladaDar1 extends Widget
                 $f = $this->cellFormat;
                 $v = $f($d);
             } else {
-                //$v = DateRus::format($this->cellFormat);
+                // $v = DateRus::format($this->cellFormat);
                 $v = $monthArray[$monthSlav][$i][$j];
             }
             $row[$j + 1 + $add] = Html::tag('td', $v, $options);
