@@ -137,7 +137,7 @@ class KoladaDar1 extends Widget
      *
      * @var string | function
      */
-    public $cellFormat = 'C / j K';
+    public $cellFormat = 'C';
 
     public function init()
     {
