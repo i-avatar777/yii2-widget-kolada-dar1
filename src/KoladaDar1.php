@@ -286,16 +286,19 @@ class KoladaDar1 extends Widget
             // 1 - 9
             $monthSlav = ($r-1)*2 + $f;
 
-            // вычисляю дату григорианского календаря
-            $d = new \DateTime($dateGrigFirstYear->format('Y-m-d'));
-            if ($this->isSacral) {
-                $z = (($monthSlav-1) * 41) + ($monthArray[$monthSlav][$i][$j] - 1);
-            } else {
-                $z = $this->calcKolDays($monthSlav) + ($monthArray[$monthSlav][$i][$j] - 1);
-            }
-            $d->add(new \DateInterval('P' . $z . 'D'));
+            $add = ($f == 2)? 6: 0;
+
 
             if ($monthArray[$monthSlav][$i][$j] != $this->emptyCell) {
+                // вычисляю дату григорианского календаря
+                $d = new \DateTime($dateGrigFirstYear->format('Y-m-d'));
+                if ($this->isSacral) {
+                    $z = (($monthSlav-1) * 41) + ($monthArray[$monthSlav][$i][$j] - 1);
+                } else {
+                    $z = $this->calcKolDays($monthSlav) + ($monthArray[$monthSlav][$i][$j] - 1);
+                }
+                $d->add(new \DateInterval('P' . $z . 'D'));
+
                 if ($this->isDrawDateGrigor) {
                     $options['title'] = date($this->DateGrigorFormat, $d->format('U'));
                     if ($this->DateGrigorClass) {
@@ -305,14 +308,13 @@ class KoladaDar1 extends Widget
                 if ($this->isDrawIds) {
                     $options['id'] = 'day_' . $monthSlav . '_' . $monthArray[$monthSlav][$i][$j];
                 }
-            }
-
-            $add = ($f == 2)? 6: 0;
-            if (!is_string($this->cellFormat)) {
-                $f = $this->cellFormat;
-                $v = $f($d);
+                if (!is_string($this->cellFormat)) {
+                    $f = $this->cellFormat;
+                    $v = $f($d, ['day' => $monthArray[$monthSlav][$i][$j]]);
+                } else {
+                    $v = $monthArray[$monthSlav][$i][$j];
+                }
             } else {
-                // $v = DateRus::format($this->cellFormat);
                 $v = $monthArray[$monthSlav][$i][$j];
             }
             $row[$j + 1 + $add] = Html::tag('td', $v, $options);
@@ -372,7 +374,7 @@ class KoladaDar1 extends Widget
         $add = ($count == 40)? 0 : 1;
         // заполнение пустых полей
         for ($r = 1; $r < $day; $r++) {
-            $out[$r] = [ 1 => $this->emptyCell];
+            $out[$r] = [ 1 => $this->emptyCell ];
         }
         $d = 1; // порядковый день в месяце
         for ($r = $day; $r <= 9; $r++) {
