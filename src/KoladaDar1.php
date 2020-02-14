@@ -3,6 +3,7 @@
 namespace iAvatar777\widgets\KoladaDar1;
 
 use Yii;
+use yii\apidoc\models\FunctionDoc;
 use yii\base\Widget;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -127,6 +128,15 @@ class KoladaDar1 extends Widget
      * @var string
      */
     public $DateGrigorFirst;
+
+    /**
+     * формат даты для ячейки по # БОСТ №000006-7528
+     * https://github.com/i-avatar777/kon/blob/master/%D0%91%D0%9E%D0%A1%D0%A2/%D0%91%D0%9E%D0%A1%D0%A2000006-7528.md
+     * 'C / j K'
+     *
+     * @var string | function
+     */
+    public $cellFormat = 'C / j K';
 
     public function init()
     {
@@ -275,18 +285,17 @@ class KoladaDar1 extends Widget
             // 1 - 9
             $monthSlav = ($r-1)*2 + $f;
 
+            // вычисляю дату григорианского календаря
+            $d = new \DateTime($dateGrigFirstYear->format('Y-m-d'));
+            if ($this->isSacral) {
+                $z = (($monthSlav-1) * 41) + ($monthArray[$monthSlav][$i][$j] - 1);
+            } else {
+                $z = $this->calcKolDays($monthSlav) + ($monthArray[$monthSlav][$i][$j] - 1);
+            }
+            $d->add(new \DateInterval('P' . $z . 'D'));
+
             if ($monthArray[$monthSlav][$i][$j] != $this->emptyCell) {
                 if ($this->isDrawDateGrigor) {
-
-                    // вычисляю дату григорианского календаря
-                    $d = new \DateTime($dateGrigFirstYear->format('Y-m-d'));
-                    if ($this->isSacral) {
-                        $z = (($monthSlav-1) * 41) + ($monthArray[$monthSlav][$i][$j] - 1);
-                    } else {
-                        $z = $this->calcKolDays($monthSlav) + ($monthArray[$monthSlav][$i][$j] - 1);
-                    }
-                    $d->add(new \DateInterval('P' . $z . 'D'));
-
                     $options['title'] = date($this->DateGrigorFormat, $d->format('U'));
                     if ($this->DateGrigorClass) {
                         $options['class'] = $this->DateGrigorClass;
@@ -298,7 +307,13 @@ class KoladaDar1 extends Widget
             }
 
             $add = ($f == 2)? 6: 0;
-            $row[$j + 1 + $add] = Html::tag('td', $monthArray[$monthSlav][$i][$j], $options);
+            if (!is_string($this->cellFormat)) {
+                $f = $this->cellFormat;
+                $v = $f($d);
+            } else {
+                $v = $monthArray[$monthSlav][$i][$j];
+            }
+            $row[$j + 1 + $add] = Html::tag('td', $v, $options);
         }
     }
 
