@@ -284,6 +284,8 @@ class KoladaDar1 extends Widget
         for($j = 1; $j <= 6; $j++) {
             $options = [];
             // 1 - 9
+            \cs\services\VarDumper::dump([$r,$f]);
+
             $monthSlav = ($r-1)*2 + $f;
 
             $add = ($f == 2)? 6: 0;
@@ -309,8 +311,8 @@ class KoladaDar1 extends Widget
                     $options['id'] = 'day_' . $monthSlav . '_' . $monthArray[$monthSlav][$i][$j];
                 }
                 if (!is_string($this->cellFormat)) {
-                    $f = $this->cellFormat;
-                    $v = $f($d, ['day' => $monthArray[$monthSlav][$i][$j]]);
+                    $function = $this->cellFormat;
+                    $v = $function($d, ['day' => $monthArray[$monthSlav][$i][$j]]);
                 } else {
                     $v = $monthArray[$monthSlav][$i][$j];
                 }
