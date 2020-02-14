@@ -2,6 +2,7 @@
 
 namespace iAvatar777\widgets\KoladaDar1;
 
+use iAvatar777\services\DateRus\DateRus;
 use Yii;
 use yii\apidoc\models\FunctionDoc;
 use yii\base\Widget;
@@ -311,6 +312,7 @@ class KoladaDar1 extends Widget
                 $f = $this->cellFormat;
                 $v = $f($d);
             } else {
+                //$v = DateRus::format($this->cellFormat);
                 $v = $monthArray[$monthSlav][$i][$j];
             }
             $row[$j + 1 + $add] = Html::tag('td', $v, $options);
