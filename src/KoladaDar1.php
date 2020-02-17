@@ -270,17 +270,19 @@ class KoladaDar1 extends Widget
 
 
     /**
-     * @param $row
-     * @param $r
-     * @param $monthArray
-     * @param int $i     месяц рус 1-9
-     * @param \DateTime $dateGrigFirstYear Дата первого для лета 21 сентября обычно
-     * @param int $f 1 - первый месяц в строке, 2 - второй месяц в строке
+     * Добавляет шесть ячеек в неделе для левого (1 - первый месяц в строке) или правого месяца (2 - второй месяц в строке)
+     *
+     * @param array     $row                массив где формируется строка недели
+     * @param int       $r                  строка общего календаря 1-5
+     * @param array     $monthArray
+     * @param int       $i                  месяц рус 1-9
+     * @param \DateTime $dateGrigFirstYear  Дата первого для лета 21 сентября обычно
+     * @param int       $f                  1 - первый месяц в строке, 2 - второй месяц в строке
      * @throws \Exception
      */
     private function add6cell(&$row, $r, $monthArray, $i, $dateGrigFirstYear, $f = 1)
     {
-        for($j = 1; $j <= 6; $j++) {
+        for ($j = 1; $j <= 6; $j++) {
             $options = [];
             // 1 - 9
             $monthSlav = ($r-1)*2 + $f;
