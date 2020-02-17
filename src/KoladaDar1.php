@@ -273,23 +273,19 @@ class KoladaDar1 extends Widget
      * @param $row
      * @param $r
      * @param $monthArray
-     * @param $i
-     * @param \DateTime $dateGrigFirstYear
+     * @param int $i     месяц рус 1-9
+     * @param \DateTime $dateGrigFirstYear Дата первого для лета 21 сентября обычно
      * @param int $f 1 - первый месяц в строке, 2 - второй месяц в строке
      * @throws \Exception
      */
     private function add6cell(&$row, $r, $monthArray, $i, $dateGrigFirstYear, $f = 1)
     {
-
         for($j = 1; $j <= 6; $j++) {
             $options = [];
             // 1 - 9
-            \cs\services\VarDumper::dump([$r,$f]);
-
             $monthSlav = ($r-1)*2 + $f;
 
             $add = ($f == 2)? 6: 0;
-
 
             if ($monthArray[$monthSlav][$i][$j] != $this->emptyCell) {
                 // вычисляю дату григорианского календаря
@@ -315,7 +311,6 @@ class KoladaDar1 extends Widget
                     $v = $function($d, ['day' => $monthArray[$monthSlav][$i][$j]]);
                 } else {
                     $v = DateRus::format($this->cellFormat, $d, ['day' => $monthArray[$monthSlav][$i][$j]]);
-//                    $v = $monthArray[$monthSlav][$i][$j];
                 }
             } else {
                 $v = $monthArray[$monthSlav][$i][$j];
@@ -340,7 +335,7 @@ class KoladaDar1 extends Widget
     }
 
     /**
-     * Генерирует массив месяцев для значения $this->monthArray
+     * Генерирует массив месяцев 1-9
      *
      * @param int $day день недели с которого начинается лето от 1 до 9
      * @param bool $isSacral флаг. Это священный год? Если да то все месяца будут по 41 дню
@@ -363,7 +358,7 @@ class KoladaDar1 extends Widget
     }
 
     /**
-     * Генерирует месяц для значения $this->monthArray
+     * Генерирует месяц с ячеками 6*9
      *
      * @param int $day день недели с которого начинается год от 1 до 9
      * @param int $count кол-во дней в месяце
