@@ -10,6 +10,7 @@ use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\helpers\VarDumper;
 
 
 /**
@@ -308,7 +309,8 @@ class KoladaDar1 extends Widget
                 if ($this->isDrawIds) {
                     $options['id'] = 'day_' . $monthSlav . '_' . $monthArray[$monthSlav][$i][$j];
                 }
-                if (!is_string($this->cellFormat)) {
+                VarDumper::dump($this->cellFormat);exit();
+                if ($this->cellFormat instanceof \Closure) {
                     $function = $this->cellFormat;
                     $v = $function($d, ['day' => $monthArray[$monthSlav][$i][$j]]);
                 } else {
