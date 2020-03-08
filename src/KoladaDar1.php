@@ -309,7 +309,6 @@ class KoladaDar1 extends Widget
                 if ($this->isDrawIds) {
                     $options['id'] = 'day_' . $monthSlav . '_' . $monthArray[$monthSlav][$i][$j];
                 }
-                VarDumper::dump($this->cellFormat);exit();
                 if ($this->cellFormat instanceof \Closure) {
                     $function = $this->cellFormat;
                     $v = $function($d, ['day' => $monthArray[$monthSlav][$i][$j]]);

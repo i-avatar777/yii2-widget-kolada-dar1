@@ -66,7 +66,18 @@ echo \avatar\widgets\KaladaDar1::widget([
     'emptyCell' => '&nbsp;'
     'isDrawIds' => true,
     'isDrawDateGrigor' => true,
-    'DateGrigorFormat' => 'd.m.Y'
+    'DateGrigorFormat' => 'd.m.Y',
+    'monthNames' => [
+        1 => 'Рамхатъ',
+        2 => 'Айлѣтъ',
+        3 => 'Бейлѣтъ',
+        4 => 'Гэйлѣтъ',
+        5 => 'Дайлѣтъ',
+        6 => 'Элѣтъ',
+        7 => 'Вэйлѣтъ',
+        8 => 'Хейлѣтъ',
+        9 => 'Тайлѣтъ',
+    ],
 ]); 
 ```
 
@@ -89,6 +100,8 @@ echo \avatar\widgets\KaladaDar1::widget([
 `DateGrigorClass` - string - Название класса для григорианской даты если $isDrawDateGrigor=true
 
 `DateGrigorFirst` - string - Дата первого дня года в григорианском календаре в формате 'Y-m-d', по умолчанию текущий
+
+`monthNames` - array - массив названий месяцев с индексами от 1 до 9
 
 ## Ссылки
 
