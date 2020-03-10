@@ -2,8 +2,6 @@
 
 Виджет для Yii2 для рисования календаря Коляда Дар на лето
 
-Версия 1.1.19
-
 Соответствует БОСТ 000006-7528 "О задании формата даты и времени в программном коде для русского календаря" http://avr3.ru/doHmJp 
 
 Выводит месяца в табличный календарь, визуально это выглядит так:
@@ -63,11 +61,11 @@ echo \avatar\widgets\KaladaDar1::widget([
         8 => 'Осьмица',
         9 => 'Неделя',
     ],
-    'emptyCell' => '&nbsp;'
-    'isDrawIds' => true,
-    'isDrawDateGrigor' => true,
-    'DateGrigorFormat' => 'd.m.Y',
-    'monthNames' => [
+    'emptyCell'         => '&nbsp;'
+    'isDrawIds'         => true,
+    'isDrawDateGrigor'  => true,
+    'DateGrigorFormat'  => 'd.m.Y',
+    'monthNames'        => [
         1 => 'Рамхатъ',
         2 => 'Айлѣтъ',
         3 => 'Бейлѣтъ',
