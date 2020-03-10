@@ -27,8 +27,7 @@ echo \avatar\widgets\KoladaDar1\KoladaDar1::widget([
 Расширенный вид запуска с параметрами стилей таблицы:
 
 ```
-$monthArray = \avatar\widgets\KaladaDar1::getMonthArray(9, false);
-echo \avatar\widgets\KaladaDar1::widget([
+echo \avatar\widgets\KoladaDar1\KoladaDar1::widget([
     'dayStart'    => 9,
     'isSacral'    => true,
     'optionsWeek' => [
@@ -61,7 +60,7 @@ echo \avatar\widgets\KaladaDar1::widget([
         8 => 'Осьмица',
         9 => 'Неделя',
     ],
-    'emptyCell'         => '&nbsp;'
+    'emptyCell'         => '&nbsp;',
     'isDrawIds'         => true,
     'isDrawDateGrigor'  => true,
     'DateGrigorFormat'  => 'd.m.Y',
