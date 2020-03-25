@@ -139,10 +139,17 @@ class KoladaDar1 extends Widget
      */
     public $cellFormat = 'C';
 
+    /**
+     * аттрибуты для тега table
+     *
+     * @var array
+     */
+    public $tableOptions = [
+        'class' => 'table table-hover table-striped'
+    ];
+
     public function run()
     {
-        $content = ob_get_clean();
-
         $params = [
             'dayStart',
             'isSacral',
@@ -157,6 +164,7 @@ class KoladaDar1 extends Widget
             'DateGrigorClass',
             'DateGrigorFirst',
             'cellFormat',
+            'tableOptions',
         ];
         $rows = [];
         foreach ($params as $p) {
