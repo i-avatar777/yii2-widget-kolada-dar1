@@ -3,6 +3,7 @@
 namespace iAvatar777\widgets\KoladaDar1;
 
 use iAvatar777\services\DateRus\DateRus;
+use iAvatar777\widgets\KoladaDar\KoladaDar;
 use Yii;
 use yii\apidoc\models\FunctionDoc;
 use yii\base\Widget;
@@ -171,7 +172,7 @@ class KoladaDar1 extends Widget
             $rows[$p] = $this->$p;
         }
 
-        $v = \iAvatar777\widgets\KoladaDar\KoladaDar::init($rows);
+        $v = KoladaDar::init($rows);
 
         return $v->run();
     }
