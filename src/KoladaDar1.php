@@ -139,279 +139,32 @@ class KoladaDar1 extends Widget
      */
     public $cellFormat = 'C';
 
-    public function init()
-    {
-        if (is_null($this->DateGrigorFirst)) {
-            $d = date('d');
-            $m = date('m');
-            if ($m < 9 and $d < 22) {
-                $y = date('Y') - 1;
-            } else {
-                $y = date('Y');
-            }
-            $this->DateGrigorFirst = $y . '-09-22';
-        }
-        parent::init();
-        ob_start();
-    }
-
     public function run()
     {
         $content = ob_get_clean();
-        $head = $this->head();
-        $body = $this->body();
 
-        return Html::tag(
-            'table',
-            $head . $body,
-            [
-                'class' => 'table table-hover table-striped'
-            ]
-            );
-    }
-
-    private function head()
-    {
-        $headers = [
-            ['name' => '#'],
-            ['name' => 'Название'],
-            ['name' => '1', 'options' => ArrayHelper::getValue($this->optionsColumn, 1, [])],
-            ['name' => '2', 'options' => ArrayHelper::getValue($this->optionsColumn, 2, [])],
-            ['name' => '3', 'options' => ArrayHelper::getValue($this->optionsColumn, 3, [])],
-            ['name' => '4', 'options' => ArrayHelper::getValue($this->optionsColumn, 4, [])],
-            ['name' => '5', 'options' => ArrayHelper::getValue($this->optionsColumn, 5, [])],
-            ['name' => '6', 'options' => ArrayHelper::getValue($this->optionsColumn, 6, [])],
-            ['name' => '1', 'options' => ArrayHelper::getValue($this->optionsColumn, 1, [])],
-            ['name' => '2', 'options' => ArrayHelper::getValue($this->optionsColumn, 2, [])],
-            ['name' => '3', 'options' => ArrayHelper::getValue($this->optionsColumn, 3, [])],
-            ['name' => '4', 'options' => ArrayHelper::getValue($this->optionsColumn, 4, [])],
-            ['name' => '5', 'options' => ArrayHelper::getValue($this->optionsColumn, 5, [])],
-            ['name' => '6', 'options' => ArrayHelper::getValue($this->optionsColumn, 6, [])],
+        $params = [
+            'dayStart',
+            'isSacral',
+            'optionsWeek',
+            'optionsColumn',
+            'weekDays',
+            'monthNames',
+            'emptyCell',
+            'isDrawIds',
+            'isDrawDateGrigor',
+            'DateGrigorFormat',
+            'DateGrigorClass',
+            'DateGrigorFirst',
+            'cellFormat',
         ];
         $rows = [];
-        foreach ($headers as $h) {
-            $options = [];
-            if (isset($h['options'])) {
-                $options = $h['options'];
-            }
-            $rows[] = Html::tag('th', $h['name'], $options);
-        }
-        $head = Html::tag(
-            'thead',
-            join('', $rows),
-            []
-        );
-
-        return $head;
-    }
-
-    private function body()
-    {
-        // заполняю пустые месяцы
-        $monthArray = $this->getMonthArray($this->dayStart, $this->isSacral);
-
-        $dateGrigFirstYear = new \DateTime($this->DateGrigorFirst);
-
-        $rowsCount = 5;
-        $week = 9;
-        $cols = 2;
-        $weekDays = $this->weekDays;
-        $rows5 = [];
-        /** @var int $r  строка месяцев в календаре */
-        for($r = 1; $r <= $rowsCount; $r++) {
-            $rows9 = [];
-
-            // Добавляю строку с названием месяца
-            $rows9[0] = join('', [
-                Html::tag('td', ''),
-                Html::tag('td', ''),
-                Html::tag('td', $this->monthNames[(($r-1)*2 + 1)], ['colspan' => 6]),
-                ($r < $rowsCount) ? Html::tag('td', $this->monthNames[(($r-1)*2 + 2)], ['colspan' => 6]) : Html::tag('td', '', ['colspan' => 6]),
-            ]);
-
-            // Добавляю девять недель
-            for($i = 1; $i <= 9; $i++) {
-                $row = [];
-                $row[0] = Html::tag('td', $i);
-                $row[1] = Html::tag('td', $weekDays[$i]);
-                $this->add6cell($row, $r, $monthArray, $i, $dateGrigFirstYear);
-
-                // Если это не последняя строка-месяцев календаря
-                if ($r < $rowsCount) {
-                    $this->add6cell($row, $r, $monthArray, $i, $dateGrigFirstYear, 2);
-                } else {
-                    for($j = 1; $j <= 6; $j++) {
-                        $row[$j + 1 + 6] = Html::tag('td', $this->emptyCell);
-                    }
-                }
-                $rows9[$i] = $row;
-            }
-            $rows5[$r] = $rows9;
+        foreach ($params as $p) {
+            $rows[$p] = $this->$p;
         }
 
-        $d5 = [];
-        foreach ($rows5 as $r1) {
-            $r = [];
-            $r[] = Html::tag('tr', $r1[0]);
-            for ($g = 1; $g <= 9; $g++) {
-                $tr = $r1[$g];
-                $r[] = Html::tag('tr', join('', $tr), ArrayHelper::getValue($this->optionsWeek, $g, []));
-            }
-            $d5[] =  join('', $r);
-        }
-        $body = Html::tag(
-            'tbody',
-            join('', $d5),
-            []
-        );
+        $v = \iAvatar777\widgets\KoladaDar\KoladaDar::init($rows);
 
-        return $body;
-    }
-
-
-    /**
-     * Добавляет шесть ячеек в неделе для левого (1 - первый месяц в строке) или правого месяца (2 - второй месяц в строке)
-     *
-     * @param array     $row                массив где формируется строка недели
-     * @param int       $r                  строка общего календаря 1-5
-     * @param array     $monthArray
-     * @param int       $i                  месяц рус 1-9
-     * @param \DateTime $dateGrigFirstYear  Дата первого для лета 21 сентября обычно
-     * @param int       $f                  1 - первый месяц в строке, 2 - второй месяц в строке
-     * @throws \Exception
-     */
-    private function add6cell(&$row, $r, $monthArray, $i, $dateGrigFirstYear, $f = 1)
-    {
-        for ($j = 1; $j <= 6; $j++) {
-            $options = [];
-            // 1 - 9
-            $monthSlav = ($r-1)*2 + $f;
-
-            $add = ($f == 2)? 6: 0;
-
-            if ($monthArray[$monthSlav][$i][$j] != $this->emptyCell) {
-                // вычисляю дату григорианского календаря
-                $d = new \DateTime($dateGrigFirstYear->format('Y-m-d'));
-                if ($this->isSacral) {
-                    $z = (($monthSlav-1) * 41) + ($monthArray[$monthSlav][$i][$j] - 1);
-                } else {
-                    $z = $this->calcKolDays($monthSlav) + ($monthArray[$monthSlav][$i][$j] - 1);
-                }
-                $d->add(new \DateInterval('P' . $z . 'D'));
-
-                if ($this->isDrawDateGrigor) {
-                    $options['title'] = date($this->DateGrigorFormat, $d->format('U'));
-                    if ($this->DateGrigorClass) {
-                        $options['class'] = $this->DateGrigorClass;
-                    }
-                }
-                if ($this->isDrawIds) {
-                    $options['id'] = 'day_' . $monthSlav . '_' . $monthArray[$monthSlav][$i][$j];
-                }
-                if ($this->cellFormat instanceof \Closure) {
-                    $function = $this->cellFormat;
-                    $v = $function($d, ['day' => $monthArray[$monthSlav][$i][$j]]);
-                } else {
-                    $v = DateRus::format($this->cellFormat, $d, ['day' => $monthArray[$monthSlav][$i][$j]]);
-                }
-            } else {
-                $v = $monthArray[$monthSlav][$i][$j];
-            }
-            $row[$j + 1 + $add] = Html::tag('td', $v, $options);
-        }
-    }
-
-    /**
-     * Вычисляет сколько дней до начала месяца (сл) в простом лете
-     * Например для 1 = 0, для 2 = 41, 3 - 81
-     * @param int $i 1-9
-     * @return int
-     */
-    private function calcKolDays($i)
-    {
-        if ($i % 2 == 1) {
-            return (($i - 1) / 2) * 81;
-        } else {
-            return (($i / 2) - 1) * 81 + 41;
-        }
-    }
-
-    /**
-     * Генерирует массив месяцев 1-9
-     *
-     * @param int $day день недели с которого начинается лето от 1 до 9
-     * @param bool $isSacral флаг. Это священный год? Если да то все месяца будут по 41 дню
-     * @return array
-     * эти месяца должны быть под индексами от 1 до 9
-     * в месяце содержатся строки - недели так же это массив с индексами от 1 до 9
-     * в неделе содержатся 6 дней (клеточка-столбик) с индексами от 1 до 6
-     */
-    public function getMonthArray($day, $isSacral = false)
-    {
-        $m = [];
-        $d = $day; // день недели с которого начинается месяц от 1 до 9
-        for($r = 1; $r <= 9; $r++) {
-            $count = ($r % 2 == 1) ? 41 : ($isSacral? 41 : 40);
-            $m[$r] = $this->getMonth($d, $count);
-            $d = (($count + ($d-1)) % 9) + 1;
-        }
-
-        return $m;
-    }
-
-    /**
-     * Генерирует месяц с ячеками 6*9
-     *
-     * @param int $day день недели с которого начинается год от 1 до 9
-     * @param int $count кол-во дней в месяце
-     * @return array
-     * в месяце содержатся строки - недели так же это массив с индексами от 1 до 9
-     * в неделе содержатся 6 дней (клеточка-столбик) с индексами от 1 до 6
-     */
-    public function getMonth($day, $count)
-    {
-        $out = [];
-        $add = ($count == 40)? 0 : 1;
-        // заполнение пустых полей
-        for ($r = 1; $r < $day; $r++) {
-            $out[$r] = [ 1 => $this->emptyCell ];
-        }
-        $d = 1; // порядковый день в месяце
-        for ($r = $day; $r <= 9; $r++) {
-            $out[$r] = [ 1 => $d];
-            $d++;
-        }
-        $f = 3; // полных недель в графике по мимо первой
-        $isLast = true; // флаг будет ли еще последняя обрезанная неделя?
-        if ($day == 6 - $add) {
-            $f = 4;
-            $isLast = false;
-        }
-        if ($day > 6 - $add) {
-            $f = 4;
-        }
-        for ($l = 1; $l <= $f; $l++) {
-            for ($r = 1; $r <= 9; $r++) {
-                $out[$r][1 + $l] = $d;
-                $d++;
-            }
-        }
-        if ($isLast) {
-            $g = $count - (9*$f) - (9 - ($day - 1)); // сколько дней осталось в месяце в последнюю неделю
-            for ($r = 1; $r <= $g; $r++) {
-                $out[$r][$f+2] = $d;
-                $d++;
-            }
-            for ($r = $g + 1; $r <= 9; $r++) {
-                $out[$r][$f+2] = $this->emptyCell;
-            }
-        }
-        if (!($f == 4 and $isLast == true)) {
-            for ($r = 1; $r <= 9; $r++) {
-                $out[$r][6] = $this->emptyCell;
-            }
-        }
-
-        return $out;
+        return $v->run();
     }
 }
